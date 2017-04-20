@@ -12,6 +12,8 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
 
     class BP_Group_Analytics_Plugin_Extension extends BP_Group_Extension {
 
+        protected $members;
+
         function __construct() {
             global $bp;
             $this->name =  __('Analytics', 'bp-group-analytics');
@@ -23,11 +25,110 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
 
             if ($bp->groups->current_group) {
                 $this->nav_item_name = $this->name;
-                $this->nav_item_position = 61;
+                $this->nav_item_position = 101;
             }
 
             $this->admin_name =  __('Analytics', 'bp-group-analytics');
             $this->admin_slug = BP_GROUP_ANALYTICS_SLUG;
+
+            $this->members = $this->_get_group_members();
+        }
+
+        /*
+         * Return group members for the current group or given group ID
+         * @param int group ID
+         * @return array member IDs
+         */
+        protected function _get_group_members($group_id = 0){
+            global $bp;
+            $members = array();
+
+            if (empty($group_id)) {
+                $group_id = $bp->groups->current_group->id;
+            }
+
+            $has_members_str = array(
+                'group_id' => $group_id,
+                'per_page' => 0,
+                'exclude_admin_mods' => 0,
+            );
+
+            if ( bp_group_has_members( $has_members_str ) ) {
+                while ( bp_group_members() ) : bp_group_the_member();
+                    $members[]= bp_get_group_member_id();
+                endwhile;
+            }
+
+            return $members;
+
+        }
+
+        /*
+         * Get xprofile field data by field ID
+         * @param int field ID
+         * @return array a array of counts by profile field grouped by values
+         */
+        protected function _get_xprofile_field_data($field_id){
+            global $bp;
+            $results = array();
+            if(!empty($this->members)){
+                foreach($this->members as $member_id){
+                    $field_data = xprofile_get_field_data( $field_id , $member_id);
+                    $results = $this->_update_item_key($results,$field_data);
+                }
+            }
+            return $results;
+        }
+
+        protected function _update_item_key($array = array(), $key = 'N/A'){
+            if ($key == "") $key = __('N/A', 'bp-group-analytics');
+            if(!empty($array)){
+                if (in_array($key, array_keys($array))) {
+                    $count = $array[$key][1];
+                    $count = $count+1;
+                    $array[$key] = array($key,$count);
+                } else {
+                    $array[$key] = array($key,1);
+                }
+            } else {
+                $array[$key] = array($key,1);
+            }
+            return $array;
+        }
+
+        protected function _display_field_chart($title, $container_id, $data){
+            $chartHTML = "";
+            $data_variable = $container_id."_data";
+            $chartHTML .=  '<h3>'.__($title, 'bp-group-analytics').'</h3><div id="'.$container_id.'" class="chart_style"></div>';
+            $chartHTML .= '<script>var '.$data_variable.' = '.wp_json_encode(array_values($data)).' </script>';
+            $chartHTML .= $this->_chartScript($container_id, $data_variable);
+            return $chartHTML;
+        }
+
+        protected function _chartScript($container_id, $data) {
+
+            $chartScript = "<script type='text/javascript'>google.charts.load('current', {'packages':['corechart']});google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Field');
+                    data.addColumn('number', 'Count');
+                    data.addRows(".$data.");
+                    var options = {chartArea:{left:20,top:20,bottom:20,right:20,width:'100%',height:'100%'}};
+                    var chart = new google.visualization.PieChart(document.getElementById('".$container_id."'));
+                    chart.draw(data, options);
+                }
+            </script>";
+
+            return $chartScript;
+        }
+
+        public function display_chart($field_id, $title, $index){
+            $field_id = intval($field_id);
+            $data = $this->_get_xprofile_field_data($field_id);
+            if(empty($data)) return false;
+            $contents = $this->_display_field_chart($title,"div_".$field_id,$data);
+            return apply_filters("bp_group_analytics_filter_chart_html",$contents, $index);
+
         }
 
         function create_screen() { }
@@ -44,70 +145,38 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
          * @author Vivek Sharma
          */
         function display() {
-            //do_action('bp_group_analytics_display');
-            //add_action('bp_template_content_header', 'bp_group_analytics_display_header');
-            //add_action('bp_template_title', 'bp_group_analytics_display_title');
-            $this->bp_group_analytics_display();
+            do_action('bp_group_analytics_display');
+            $this->bp_group_analytics_display_from_saved_meta();
         }
 
-        function bp_group_analytics_display(){
-            $members_data = $this->_bp_group_analytics_generate_member_data(array(392,502));
-            if(!empty($members_data)){
-                echo "<h3>Role</h3>";
-                foreach($members_data['392'] as $key => $data){
-                    echo $key.'( '.$data.' )'."<br/>";
-                }
-
-                echo "<h3>Country</h3>";
-                foreach($members_data['502'] as $key => $data){
-                    echo $key.'( '.$data.' )'."<br/>";
-                }
-            }
-        }
-
-        function _bp_group_analytics_generate_member_data($fields = array()){
-            global $bp;
-            $results = array();
-            if(empty($fields)) return false;
-            $group_id = $bp->groups->current_group->id;
-            $has_members_str = "group_id=" . $group_id;
-            if ( bp_group_has_members( $has_members_str ) ) {
-                while ( bp_group_members() ) : bp_group_the_member();
-                foreach ($fields as $field) {
-                    $field_data = xprofile_get_field_data( $field , bp_get_group_member_id());
-                    $results[$field] = $this->_update_item_key($results[$field],$field_data);
-                }
-                endwhile;
-            }
-            return $results;
-        }
-
-        function _update_item_key($array = array(), $key){
-            if(!empty($array)){
-
-                if (in_array($key, array_keys($array))) {
-                    $array[$key] = $array[$key]+1;
-                } else {
-                    $array[$key] = 1;
+        function bp_group_analytics_display_from_saved_meta(){
+            $xprofile_selected_fields_value = get_option('BP_GROUP_ANALYTICS_OPTIONS_META_TITLE');
+            $xprofile_selected_fields = array();
+            if(!empty($xprofile_selected_fields_value)){
+                $xprofile_selected_fields = explode(",",$xprofile_selected_fields_value);
+                $index = 0;
+                foreach($xprofile_selected_fields as $field){
+                    $field_data = explode("|",$field);
+                    echo $this->display_chart($field_data[0],$field_data[1],$index);
+                    $index++;
                 }
             } else {
-                $array[$key] = 1;
+                echo "<p>". __('Please add profile fields from plugin admin settings.', 'bp-group-analytics')."</p>";
             }
-            return $array;
+
         }
 
     }
-/**
- * @author Vivek Sharma
- * @since 0.5
- * @version 1.3, 25/10/2013 Makes sure the get_home_path function is defined before trying to use it
- * v1.2.2 remove admin-uploads.php file
- * v1, 5/3/2013
- */
-function bp_group_analytics_include_files() {
-    //to be done later
-}
+    /**
+     * @author Vivek Sharma
+     * @since 1.0
+     * @version 1.0
+     */
+    function bp_group_analytics_include_files() {
+        require ( dirname(__FILE__) . '/include/cssjs.php' );
+        require ( dirname(__FILE__) . '/include/admin.php' );
+    }
 
-bp_register_group_extension('BP_Group_Analytics_Plugin_Extension');
+    bp_register_group_extension('BP_Group_Analytics_Plugin_Extension');
 endif; // class_exists( 'BP_Group_Extension' )
-?>
+

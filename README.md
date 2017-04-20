@@ -1,29 +1,17 @@
-# README #
+# Buddypress Group Analytics #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Buddpress group analytics is a wordpress plugin providing stats in form of pie charts
+for the profile fields of group members.
 
-### What is this repository for? ###
+### Installation and Configuration  ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Get the latest stable version from https://wordpress.org/plugins/bp-group-analytics/
 
-### How do I get set up? ###
+*You can manually download compressed version and place the contents on the plugins directory of your
+wordpress instaltion or install the zip via Wordpress Dashboard.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Feedback ###
 
-### Contribution guidelines ###
+Please leave a comment with any bugs, improvements, or comments at
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+https://github.com/erviveksharma/bp-group-analytics
