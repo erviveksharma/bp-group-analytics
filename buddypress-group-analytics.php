@@ -131,20 +131,20 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
 
         }
 
-        function create_screen() { }
+        function create_screen($group_id = null) { }
 
-        function create_screen_save() { }
+        function create_screen_save($group_id = null) { }
 
-        function edit_screen() { }
+        function edit_screen($group_id = null) { }
 
-        function edit_screen_save() {   }
+        function edit_screen_save($group_id = null) {   }
 
         /**
          * @version 1.0
          * @since version 1.0
          * @author Vivek Sharma
          */
-        function display() {
+        function display($group_id = null) {
             do_action('bp_group_analytics_display');
             $this->bp_group_analytics_display_from_saved_meta();
         }
