@@ -12,7 +12,7 @@ if (!defined('ABSPATH'))
  */
 function bp_group_analytics_admin() {
 
-    do_action('bp_group_documents_admin');
+    do_action('bp_group_analytics_admin');
 
     /* If the form has been submitted and the admin referrer checks out, save the settings */
     if (!empty($_POST) && check_admin_referer('bpgroup-analytics-settings-save', 'bpgroup-analytics-settings-nonce_field')) {
@@ -36,7 +36,7 @@ function bp_group_analytics_admin() {
 
     ?>
         <div class="wrap">
-            <h2>Buddypress Group Documents: <?php _e('Settings'); ?></h2>
+            <h2>Buddypress Group Analytics: <?php _e('Settings'); ?></h2>
             <br/>
 
             <?php
@@ -114,10 +114,6 @@ function bp_group_analytics_group_add_admin_menu() {
     /* Add the administration tab under the "Site Admin" tab for site administrators */
     $page = add_submenu_page(
             bp_group_analytics_find_admin_location(), 'Buddypress Group Analytics ' . __('Settings'), '<span class="bp-group-analytics-admin-menu-header">' . __('Buddypress Group Analytics', 'bp-group-analytics') . '</span>', 'manage_options', 'bp-group-analytics-settings', 'bp_group_analytics_admin');
-
-    // add styles only on bp-group-documents admin page, see:
-    // http://codex.wordpress.org/Function_Reference/wp_enqueue_script#Load_scripts_only_on_plugin_pages
-    //add_action( 'admin_print_styles-'.$page, 'bp_group_documents_add_admin_style' );
 }
 
 add_action(bp_core_admin_hook(), 'bp_group_analytics_group_add_admin_menu', 10);

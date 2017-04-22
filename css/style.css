@@ -6,3 +6,9 @@
     width: 100%;
     min-height: 300px;
 }
+
+/*
+ * Google Chart tooltip flickers on hover issue
+ * http://stackoverflow.com/questions/37902708/google-charts-tooltip-flickering#39775254
+ */
+svg > g > g:last-child { pointer-events: none }
