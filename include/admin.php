@@ -32,7 +32,7 @@ function bp_group_analytics_admin() {
     if(!empty($xprofile_selected_fields_value))
         $xprofile_selected_fields = explode(",",$xprofile_selected_fields_value);
 
-    $profile_groups = BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
+    $profile_groups = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 
     ?>
         <div class="wrap">
@@ -144,7 +144,7 @@ function bp_group_analytics_xprofile_selected_fields($posted_value, $option){
     $option_value = "";
 
     //get possible profile fields values
-    $profile_groups = BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
+    $profile_groups = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
     $profile_fields = array();
     if ( !empty( $profile_groups ) ) {
         foreach ( $profile_groups as $profile_group ) {

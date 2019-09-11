@@ -25,7 +25,7 @@ define('BP_GROUP_ANALYTICS_VERSION', '1.0');
 
 //allow override of URL slug
 if (!defined('BP_GROUP_ANALYTICS_SLUG')) {
-    define('BP_GROUP_ANALYTICS_SLUG', 'analytics');
+    define('BP_GROUP_ANALYTICS_SLUG', 'pt_analytics');
     define('BP_GROUP_ANALYTICS_OPTIONS_META_TITLE', 'bp_group_analytics_xprofile_selected_fields');
 }
 
@@ -85,5 +85,17 @@ function bp_group_analytics_load_textdomain() {
 
     if (file_exists(dirname(__FILE__) . '/languages/bp-group-analytics-' . get_locale() . '.mo')) {
         load_plugin_textdomain($domain, false, dirname(plugin_basename(__FILE__)) . '/languages/');
+    }
+}
+
+# check required wordpress plugins
+register_activation_hook( __FILE__, 'bp_group_analytics_import_install' );
+function bp_group_analytics_import_install() {
+    global $bp;
+
+    # Check whether BP is active and whether Groups component is loaded, and throw error if not
+    if(!(function_exists('BuddyPress') || is_a($bp,'BuddyPress')) || !bp_is_active('groups')) {
+       echo 'BuddyPress is not installed or the Groups component is not activated. Cannot continue.';
+        exit;
     }
 }
