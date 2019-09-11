@@ -174,7 +174,7 @@ function bp_group_analytics_xprofile_selected_fields($posted_value, $option){
     return $option_value;
 }
 
-add_filter( 'sanitize_option_bp_group_analytics_xprofile_selected_fields', 'bp_group_analytics_xprofile_selected_fields' );
+add_filter( 'sanitize_option_bp_group_analytics_xprofile_selected_fields', 'bp_group_analytics_xprofile_selected_fields', 10, 2 );
 /// Add link to settings page
 add_filter('plugin_action_links', 'bp_group_analytics_settings_link', 10, 2);
 add_filter('network_admin_plugin_action_links', 'bp_group_analytics_settings_link', 10, 2);

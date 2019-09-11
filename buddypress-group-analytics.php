@@ -31,7 +31,8 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
             $this->admin_name =  __('Analytics', 'bp-group-analytics');
             $this->admin_slug = BP_GROUP_ANALYTICS_SLUG;
 
-            $this->members = $this->_get_group_members();
+            if(!is_admin())
+                $this->members = $this->_get_group_members();
         }
 
         /*
@@ -50,7 +51,7 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
             $has_members_str = array(
                 'group_id' => $group_id,
                 'per_page' => 0,
-                'exclude_admin_mods' => 0,
+                'exclude_admins_mods' => 0,
             );
 
             if ( bp_group_has_members( $has_members_str ) ) {
