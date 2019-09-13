@@ -5,10 +5,10 @@
   GitHub: https://github.com/erviveksharma/bp-group-analytics
 
   Description: BP Group Analytics.
-  Version: 1.0
-  Revision Date: April 11,2017
+  Version: 1.1
+  Revision Date: September 13,2019
   Requires at least: WP 3.5.1, BuddyPress 1.6.5
-  Tested up to: WP 3.7.1, BuddyPress 1.9
+  Tested up to: WP 5.2.3, BuddyPress 4.4.0
   License:  GNU General Public License 3.0 or newer (GPL) http://www.gnu.org/licenses/gpl.html
   Author: Vivek Sharma
   Author URI: http://ProvisTechnologies.com
@@ -19,13 +19,13 @@
 /* Only load code that needs BuddyPress to run once BP is loaded and initialized. */
 
 //some constants that can be checked when extending this plugin
-define('BP_GROUP_ANALYTICS_IS_INSTALLED', 1);
-define('BP_GROUP_ANALYTICS_VERSION', '1.0');
+define('BP_GROUP_ANALYTICS_IS_INSTALLED', 1.1);
+define('BP_GROUP_ANALYTICS_VERSION', '1.1');
 
 
 //allow override of URL slug
 if (!defined('BP_GROUP_ANALYTICS_SLUG')) {
-    define('BP_GROUP_ANALYTICS_SLUG', 'pt_analytics');
+    define('BP_GROUP_ANALYTICS_SLUG', 'analytics');
     define('BP_GROUP_ANALYTICS_OPTIONS_META_TITLE', 'bp_group_analytics_xprofile_selected_fields');
 }
 

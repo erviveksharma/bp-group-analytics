@@ -1,16 +1,21 @@
 ===BP Group Analytics  ===
 Contributors: erviveksharma2008
 Tags: BuddyPress, group, xprofile fields, plugin, charts
-Version: 1.0
-Revision Date: April 11,2017
+Version: 1.1
+Revision Date: September 13, 2019
 Requires at least: WP 3.5.1, BuddyPress 1.6.5
-Tested up to: WP 3.7.1, BuddyPress 1.9
+Tested up to: WP 5.2.3, BuddyPress 4.4.0
 License:  GNU General Public License 3.0 or newer (GPL) http://www.gnu.org/licenses/gpl.html
 Author: Vivek Sharma
 Author URI: http://ProvisTechnologies.com
 Website: http://ProvisTechnologies.com
 Stable tag: trunk
-Description: Pie charts for xprofile fields.
+
+Pie charts for xprofile fields.
+
+== Description ==
+Due to the presence of large number of groups and members, it becomes difficult to manage and procure relevant information about them. BP group analytics plugin helps solves this problem by providing an overview of the group members by using their xprofile fields.
+This plugin helps to understand the relevant information easily through its graphical representation.
 
 == Notes ==
 

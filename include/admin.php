@@ -16,6 +16,7 @@ function bp_group_analytics_admin() {
 
     /* If the form has been submitted and the admin referrer checks out, save the settings */
     if (!empty($_POST) && check_admin_referer('bpgroup-analytics-settings-save', 'bpgroup-analytics-settings-nonce_field')) {
+        bp_group_analytics_import_install();
         if (isset($_POST['xprofile_selected_fields'])) {
             $post_xprofile_selected_fields = sanitize_option(BP_GROUP_ANALYTICS_OPTIONS_META_TITLE, $_POST['xprofile_selected_fields']);
             update_option('BP_GROUP_ANALYTICS_OPTIONS_META_TITLE', $post_xprofile_selected_fields);

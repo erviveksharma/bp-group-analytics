@@ -6,7 +6,7 @@ if (!defined('ABSPATH'))
 /**
  * @author Vivek Sharma
  * @since  1.0
- * @version 1.0
+ * @version 1.1
  */
 if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems during upgrade or when Groups are disabled
 
@@ -142,7 +142,7 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
 
         /**
          * @version 1.0
-         * @since version 1.0
+         * @since version 1.1
          * @author Vivek Sharma
          */
         function display($group_id = null) {
@@ -171,7 +171,7 @@ if (class_exists('BP_Group_Extension')) : // Recommended, to prevent problems du
     /**
      * @author Vivek Sharma
      * @since 1.0
-     * @version 1.0
+     * @version 1.1
      */
     function bp_group_analytics_include_files() {
         require ( dirname(__FILE__) . '/include/cssjs.php' );
