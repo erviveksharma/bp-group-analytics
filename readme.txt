@@ -3,8 +3,9 @@ Contributors: erviveksharma2008
 Tags: BuddyPress, group, xprofile fields, plugin, charts
 Version: 1.1
 Revision Date: September 13, 2019
-Requires at least: WP 3.5.1, BuddyPress 1.6.5
-Tested up to: WP 5.2.3, BuddyPress 4.4.0
+Requires at least: 3.5.1
+Tested up to: 5.2.3
+Requires PHP: 7.2
 License:  GNU General Public License 3.0 or newer (GPL) http://www.gnu.org/licenses/gpl.html
 Author: Vivek Sharma
 Author URI: http://ProvisTechnologies.com
